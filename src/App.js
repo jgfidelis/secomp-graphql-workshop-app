@@ -32,8 +32,23 @@ function App() {
     return <span>Loading!!</span>;
   }
   console.log("data:", data);
-  const { product } = data;
-  return <div>Name: {product.productName}</div>;
+  const { product, minicart } = data;
+  const { firstItem } = product;
+
+  return (
+    <div>
+      <div>
+        <h3>Items in cart: {minicart.itemCount}</h3>
+      </div>
+      <h1>{product.productName}</h1>
+      <img height={150} width={150} src={firstItem.imageUrl} />
+      <div>
+        <span>
+          For only: <strong>{firstItem.price}</strong>
+        </span>
+      </div>
+    </div>
+  );
 }
 
 export default App;
