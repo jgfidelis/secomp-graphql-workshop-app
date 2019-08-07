@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const { data, loading } = useQuery(
+    gql`
+      query Product($slug: String!) {
+        minicart {
+          itemCount
+          cacheId
+        }
+        product(slug: $slug) {
+          productName
+          categoryNames
+          firstItem {
+            itemId
+            imageUrl
+            price
+            nameComplete
+          }
+        }
+      }
+    `,
+    {
+      variables: {
+        slug: "men-balm-apos-barba-110g-23755"
+      }
+    }
   );
+  if (loading) {
+    return <span>Loading!!</span>;
+  }
+  console.log("data:", data);
+  const { product } = data;
+  return <div>Name: {product.productName}</div>;
 }
 
 export default App;
